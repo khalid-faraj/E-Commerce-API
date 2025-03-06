@@ -1,0 +1,5 @@
+﻿Id,ShortName,Description,DeliveryTime,Price
+1,UPS1,Fastest delivery time,1-2 Days,10.00
+2,UPS2,Get it within 5 days,2-5 Days,5.00
+3,UPS3,Slower but cheap,5-10 Days,2.00
+4,FREE,Free! You get what you pay for,1-2 Weeks,0.00
