@@ -1,4 +1,6 @@
-﻿using Entities.RepositoriesInterfaces;
+﻿using DataAccess.Data;
+using Entities.RepositoriesInterfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +11,20 @@ namespace DataAccess.RepositoriesImplementation
 {
 	public class GenericRepository<T> : IGenericRepository<T> where T : class
 	{
-		public Task<T> GetByIdAsync(int id)
+		private readonly ApplicationContext _context;
+        public GenericRepository(ApplicationContext context)
+        {
+			_context = context;
+        }
+        public async Task<T> GetByIdAsync(int id)
 		{
-			throw new NotImplementedException();
+			return await _context.Set<T>().FindAsync(id);
 		}
 
-		public Task<IReadOnlyList<T>> ListAllAsync()
+		public async Task<IReadOnlyList<T>> ListAllAsync()
 		{
-			throw new NotImplementedException();
+			return await _context.Set<T>().ToListAsync();
 		}
+
 	}
 }
