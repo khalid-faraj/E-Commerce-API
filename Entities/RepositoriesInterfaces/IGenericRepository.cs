@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Specifications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,7 @@ namespace Entities.RepositoriesInterfaces
 	{
 		Task<T> GetByIdAsync(int id);
 		Task<IReadOnlyList<T>> ListAllAsync();
+		Task<T> GetEntityWithSpec(ISpecification<T> specification);
+		Task<IReadOnlyList<T>> ListAsync(ISpecification<T> specification); 
 	}
 }

@@ -9,11 +9,11 @@ namespace Entities.Specifications
 {
 	internal class BaseSpecification<T> : ISpecification<T>
 	{
-        public BaseSpecification(Expression<Func<T, bool>> filter)
+        public BaseSpecification(Expression<Func<T, bool>> criteria)
 		{
-            Filter = filter;
+			Criteria = criteria;
         }
-        public Expression<Func<T, bool>> Filter { get; }
+        public Expression<Func<T, bool>> Criteria { get; }
 
 		public List<Expression<Func<T, object>>> Includes { get; } =
 			new List<Expression<Func<T, object>>>();
