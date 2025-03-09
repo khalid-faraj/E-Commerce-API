@@ -25,4 +25,8 @@
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\images\.DS_Store" />
+  </ItemGroup>
+
 </Project>
