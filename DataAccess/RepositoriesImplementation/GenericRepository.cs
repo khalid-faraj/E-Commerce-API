@@ -1,5 +1,6 @@
 ﻿using DataAccess.Data;
 using Entities.RepositoriesInterfaces;
+using Entities.Specifications;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,24 @@ namespace DataAccess.RepositoriesImplementation
 			return await _context.Set<T>().FindAsync(id);
 		}
 
+		public async Task<T> GetEntityWithSpec(ISpecification<T> specification)
+		{
+			return await ApplySpecificationAsync(specification).FirstOrDefaultAsync();
+		}
+
 		public async Task<IReadOnlyList<T>> ListAllAsync()
 		{
 			return await _context.Set<T>().ToListAsync();
 		}
 
+		public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> specification)
+		{
+			return await ApplySpecificationAsync(specification).ToListAsync();
+		}
+
+		private IQueryable<T> ApplySpecificationAsync(ISpecification<T> specification)
+		{
+			return SpecificationEvaluator<T>.GetQuary(_context.Set<T>().AsQueryable(), specification);
+		}
 	}
 }
