@@ -1,4 +1,5 @@
 ﻿using API.DTOs;
+using API.Helper;
 using AutoMapper;
 using Entities.Models;
 using System;
@@ -15,7 +16,9 @@ namespace Entities.Helper
 		{
 			CreateMap<Product, ProductToReturnDTO>()
 				.ForMember(d => d.ProductBrand, o => o.MapFrom(s => s.ProductBrand.Name))
-				.ForMember(d => d.ProductType, o => o.MapFrom(s => s.ProductType.Name));
+				.ForMember(d => d.ProductType, o => o.MapFrom(s => s.ProductType.Name))
+				.ForMember(d => d.PicUrl, o => o.MapFrom<ProductUrlResolver>());
+
 
 		}
 	}
