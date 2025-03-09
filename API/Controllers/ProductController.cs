@@ -4,6 +4,7 @@ using API.Controllers;
 using Entities.Models;
 using Entities.RepositoriesInterfaces;
 using Entities.Specifications;
+using API.DTOs;
 namespace API.Controllers
 {
 	[Route("api/[controller]")]
@@ -24,18 +25,36 @@ namespace API.Controllers
 			_productTypeRepo = productTypeRepo;
 		}
 		[HttpGet]
-		public async Task<ActionResult<List<Product>>> GetProducts()
+		public async Task<ActionResult<List<ProductToReturnDTO>>> GetProducts()
 		{
 			var spec = new ProductBrandAndTypeSpecification();
 			var products = await _productRepo.ListAsync(spec);
-			return Ok(products);
+			return products.Select(p => new ProductToReturnDTO()
+			{
+				Id = p.Id,
+				Name = p.Name,
+				Description = p.Description,
+				Price = p.Price,
+				PicUrl= p.PicUrl,
+				ProductBrand = p.ProductBrand.Name,
+				ProductType = p.ProductType.Name
+	 		}).ToList();
 		}
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Product>> GetProduct(int id)
+		public async Task<ActionResult<ProductToReturnDTO>> GetProduct(int id)
 		{
 			var spec = new ProductBrandAndTypeSpecification(id);
 			var product = await _productRepo.GetEntityWithSpec(spec);
-			return product;
+			return new ProductToReturnDTO()
+			{
+				Id=product.Id,
+				Name = product.Name,
+				Description = product.Description,
+				Price = product.Price,
+				PicUrl= product.PicUrl,
+				ProductBrand = product.ProductBrand.Name,
+				ProductType = product.ProductType.Name
+			};
 		}
 		[HttpGet("brands")]
 		public async Task<ActionResult<List<ProductBrand>>> GetProductBrands()
