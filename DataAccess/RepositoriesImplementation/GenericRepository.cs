@@ -24,7 +24,7 @@ namespace DataAccess.RepositoriesImplementation
 
 		public async Task<T> GetEntityWithSpec(ISpecification<T> specification)
 		{
-			return await ApplySpecificationAsync(specification).FirstOrDefaultAsync();
+			return await ApplySpecification(specification).FirstOrDefaultAsync();
 		}
 
 		public async Task<IReadOnlyList<T>> ListAllAsync()
@@ -34,10 +34,10 @@ namespace DataAccess.RepositoriesImplementation
 
 		public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> specification)
 		{
-			return await ApplySpecificationAsync(specification).ToListAsync();
+			return await ApplySpecification(specification).ToListAsync();
 		}
 
-		private IQueryable<T> ApplySpecificationAsync(ISpecification<T> specification)
+		private IQueryable<T> ApplySpecification(ISpecification<T> specification)
 		{
 			return SpecificationEvaluator<T>.GetQuary(_context.Set<T>().AsQueryable(), specification);
 		}
