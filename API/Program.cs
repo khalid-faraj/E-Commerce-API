@@ -1,3 +1,4 @@
+using API.Middlewares;
 using DataAccess.Data;
 using DataAccess.RepositoriesImplementation;
 using Entities.RepositoriesInterfaces;
@@ -25,6 +26,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
