@@ -14,7 +14,7 @@
         {
             return statusCode switch
             {
-                400 => "There Is A Bad Response!",
+                400 => "There Is A Bad Request from you!",
                 401 => "You Are Not Authorized!",
                 404 => "Item Not Found",
                 500 => "Sorry, Server Error.",
