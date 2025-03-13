@@ -9,7 +9,9 @@ namespace Entities.Specifications
 {
 	public class ProductBrandAndTypeSpecification : BaseSpecification<Product>
 	{
-        public ProductBrandAndTypeSpecification(string sort)
+        public ProductBrandAndTypeSpecification(string sort, int? typeId, int? brandId)
+            :base (c => (!brandId.HasValue || c.ProductBrandId == brandId) &&
+                       (!typeId.HasValue || c.ProductTypeId == typeId))
         {
             AddIncludes(p=>p.ProductBrand);
             AddIncludes(p=>p.ProductType);
