@@ -26,6 +26,10 @@ namespace Entities.Specifications
 
 		public Expression<Func<T, object>> OrderByDescending {  get; private set; }
 
+		public int Take { get; private set; }
+		public int Skip { get; private set; }
+		public bool IsPagingEnabled { get; private set; }
+
 		protected void AddIncludes(Expression<Func<T, object>> IncludeExpression)
 		{
 			Includes.Add(IncludeExpression);
@@ -37,6 +41,12 @@ namespace Entities.Specifications
 		protected void AddOrderByDescending(Expression<Func<T, object>> orderByDesExpression)
 		{
 			OrderByDescending = orderByDesExpression;
+		}
+		protected void ApplyPaging(int skip, int take)
+		{
+			Take = take;
+			Skip = skip;
+			IsPagingEnabled = true;
 		}
 
 	}

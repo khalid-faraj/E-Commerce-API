@@ -9,16 +9,17 @@ namespace Entities.Specifications
 {
 	public class ProductBrandAndTypeSpecification : BaseSpecification<Product>
 	{
-        public ProductBrandAndTypeSpecification(string sort, int? typeId, int? brandId)
-            :base (c => (!brandId.HasValue || c.ProductBrandId == brandId) &&
-                       (!typeId.HasValue || c.ProductTypeId == typeId))
+        public ProductBrandAndTypeSpecification(ProductSpecParams productSpecParams)
+            :base (c => (!productSpecParams.BrandId.HasValue || c.ProductBrandId == productSpecParams.BrandId) &&
+                       (!productSpecParams.TypeId.HasValue || c.ProductTypeId == productSpecParams.TypeId))
         {
             AddIncludes(p=>p.ProductBrand);
             AddIncludes(p=>p.ProductType);
             AddOrderBy(x=>x.Name);
-            if (!string.IsNullOrEmpty(sort))
+            ApplyPaging(productSpecParams.PageSize * (productSpecParams.PageIndex - 1), productSpecParams.PageSize);
+            if (!string.IsNullOrEmpty(productSpecParams.Sort))
             {
-                switch(sort)
+                switch(productSpecParams.Sort)
                 {
                     case "priceAsc": 
                         AddOrderBy(p => p.Price);

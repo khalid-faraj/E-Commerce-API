@@ -17,7 +17,10 @@ namespace DataAccess.RepositoriesImplementation
         {
 			_context = context;
         }
-        public async Task<T> GetByIdAsync(int id)
+
+		
+
+		public async Task<T> GetByIdAsync(int id)
 		{
 			return await _context.Set<T>().FindAsync(id);
 		}
@@ -36,7 +39,10 @@ namespace DataAccess.RepositoriesImplementation
 		{
 			return await ApplySpecification(specification).ToListAsync();
 		}
-
+		public async Task<int> CountAsync(ISpecification<T> specification)
+		{
+			return await ApplySpecification(specification).CountAsync();
+		}
 		private IQueryable<T> ApplySpecification(ISpecification<T> specification)
 		{
 			return SpecificationEvaluator<T>.GetQuary(_context.Set<T>().AsQueryable(), specification);

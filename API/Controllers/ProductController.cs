@@ -6,6 +6,7 @@ using Entities.RepositoriesInterfaces;
 using Entities.Specifications;
 using API.DTOs;
 using AutoMapper;
+using API.Helper;
 namespace API.Controllers
 {
 	[Route("api/[controller]")]
@@ -28,12 +29,15 @@ namespace API.Controllers
 			_mapper = mapper;
 		}
 		[HttpGet]
-		public async Task<ActionResult<List<ProductToReturnDTO>>> 
-			GetProducts(string sort, int? typeId, int? brandId)
+		public async Task<ActionResult<Pagination<ProductToReturnDTO>>> 
+			GetProducts([FromQuery]ProductSpecParams productSpecParams)
 		{
-			var spec = new ProductBrandAndTypeSpecification(sort, typeId, brandId);
+			var spec = new ProductBrandAndTypeSpecification(productSpecParams);
+			var countSpec = new ProductWithFiltersForCountSpecifications(productSpecParams);
+			var totalItems = await _productRepo.CountAsync(countSpec);
 			var products = await _productRepo.ListAsync(spec);
-			return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDTO>>(products));
+			var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDTO>>(products);
+			return Ok(new Pagination<ProductToReturnDTO>(productSpecParams.PageIndex, productSpecParams.PageSize,totalItems,data));
 		}
 		[HttpGet("{id}")]
 		public async Task<ActionResult<ProductToReturnDTO>> GetProduct(int id)
