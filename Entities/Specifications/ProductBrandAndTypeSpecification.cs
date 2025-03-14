@@ -10,8 +10,12 @@ namespace Entities.Specifications
 	public class ProductBrandAndTypeSpecification : BaseSpecification<Product>
 	{
         public ProductBrandAndTypeSpecification(ProductSpecParams productSpecParams)
-            :base (c => (!productSpecParams.BrandId.HasValue || c.ProductBrandId == productSpecParams.BrandId) &&
-                       (!productSpecParams.TypeId.HasValue || c.ProductTypeId == productSpecParams.TypeId))
+            : base
+            (c =>
+            (string.IsNullOrEmpty(productSpecParams.Search)|| c.Name.ToLower().Contains(productSpecParams.Search)) &&
+            (!productSpecParams.BrandId.HasValue || c.ProductBrandId == productSpecParams.BrandId) &&
+            (!productSpecParams.TypeId.HasValue || c.ProductTypeId == productSpecParams.TypeId)
+            )
         {
             AddIncludes(p=>p.ProductBrand);
             AddIncludes(p=>p.ProductType);
