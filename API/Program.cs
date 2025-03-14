@@ -18,6 +18,14 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddCors(opt =>
+{
+	opt.AddPolicy("CorsPolicy", policy =>
+	{
+		policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+	});
+}
+);
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -29,6 +37,7 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCors("CorsPolicy");
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 app.UseRouting();
 app.MapControllers();
