@@ -3,6 +3,7 @@ using DataAccess.Data;
 using DataAccess.RepositoriesImplementation;
 using Entities.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,12 @@ builder.Services.AddCors(opt =>
 	});
 }
 );
+
+builder.Services.AddSingleton<IConnectionMultiplexer>( c=>
+{
+	var options = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
+	return ConnectionMultiplexer.Connect(options);
+});
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
