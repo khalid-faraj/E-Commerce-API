@@ -31,6 +31,9 @@ builder.Services.AddIdentityCore<AppUser>(opt =>
 }).AddEntityFrameworkStores<AppIdentityDbContext>()
 .AddSignInManager<SignInManager<AppUser>>();
 
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();	
+
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
@@ -59,6 +62,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -70,11 +74,16 @@ app.MapControllers();
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var context = services.GetRequiredService<ApplicationContext>();
+var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+var userManager = services.GetRequiredService<UserManager<AppUser>>();
 var logger = services.GetRequiredService<ILogger<Program>>();
+
 try
 {
 	await context.Database.MigrateAsync();
+	await identityContext.Database.MigrateAsync();
 	await ApplicationContextSeed.SeedAsync(context);
+	await AppIdentityDbContextSeed.SeedUserAsync(userManager);
 }
 catch (Exception ex)
 {
