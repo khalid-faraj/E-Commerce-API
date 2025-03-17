@@ -1,11 +1,11 @@
-﻿using Entities.Specifications;
+﻿using Core.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.RepositoriesInterfaces
+namespace Core.RepositoriesInterfaces
 {
 	public interface IGenericRepository<T> where T : class
 	{

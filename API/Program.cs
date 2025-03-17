@@ -1,7 +1,7 @@
 using API.Middlewares;
 using DataAccess.Data;
 using DataAccess.RepositoriesImplementation;
-using Entities.RepositoriesInterfaces;
+using Core.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 

@@ -1,9 +1,9 @@
 ﻿using DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 using API.Controllers;
-using Entities.Models;
-using Entities.RepositoriesInterfaces;
-using Entities.Specifications;
+using Core.Models;
+using Core.RepositoriesInterfaces;
+using Core.Specifications;
 using API.DTOs;
 using AutoMapper;
 using API.Helper;

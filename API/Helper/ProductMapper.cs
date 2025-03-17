@@ -1,14 +1,14 @@
 ﻿using API.DTOs;
 using API.Helper;
 using AutoMapper;
-using Entities.Models;
+using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Helper
+namespace API.Helper
 {
 	public class ProductMapper : Profile
 	{

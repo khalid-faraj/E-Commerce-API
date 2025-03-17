@@ -1,6 +1,6 @@
 ﻿using DataAccess.Data;
-using Entities.Models;
-using Entities.RepositoriesInterfaces;
+using Core.Models;
+using Core.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

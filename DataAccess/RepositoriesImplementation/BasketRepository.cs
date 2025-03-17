@@ -1,5 +1,5 @@
-﻿using Entities.Models;
-using Entities.RepositoriesInterfaces;
+﻿using Core.Models;
+using Core.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore.Storage;
 using StackExchange.Redis;
 using System;

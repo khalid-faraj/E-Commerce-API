@@ -1,6 +1,6 @@
 ﻿using DataAccess.Data;
-using Entities.RepositoriesInterfaces;
-using Entities.Specifications;
+using Core.RepositoriesInterfaces;
+using Core.Specifications;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Entities.Models;
+﻿using Core.Models;
 
 namespace API.DTOs
 {
