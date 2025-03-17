@@ -10,7 +10,7 @@ namespace DataAccess.Data
         {
 
         }
-        public ApplicationContext(DbContextOptions options) : base(options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
 
         }
