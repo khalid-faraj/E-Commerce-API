@@ -4,6 +4,7 @@ using DataAccess.RepositoriesImplementation;
 using Core.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
+using DataAccess.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 	options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddDbContext<ApplicationContext>(options =>
+builder.Services.AddDbContext<AppIdentityDbContext>(options =>
 {
 	options.UseSqlite(builder.Configuration.GetConnectionString("IdentityConnection"));
 });
