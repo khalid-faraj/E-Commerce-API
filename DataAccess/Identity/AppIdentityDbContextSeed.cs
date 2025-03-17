@@ -29,7 +29,7 @@ namespace DataAccess.Identity
 						ZipCode = "12345"
 					}
 				};
-				await userManager.CreateAsync(user, "Pass123");
+				await userManager.CreateAsync(user, "P@ss123");
 			}
 		}
 	}

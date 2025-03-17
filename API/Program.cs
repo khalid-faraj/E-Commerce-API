@@ -5,6 +5,8 @@ using Core.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using DataAccess.Identity;
+using Core.Identity;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,10 +25,17 @@ builder.Services.AddDbContext<AppIdentityDbContext>(options =>
 	options.UseSqlite(builder.Configuration.GetConnectionString("IdentityConnection"));
 });
 
+builder.Services.AddIdentityCore<AppUser>(opt =>
+{
+
+}).AddEntityFrameworkStores<AppIdentityDbContext>()
+.AddSignInManager<SignInManager<AppUser>>();
+
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddCors(opt =>
 {
 	opt.AddPolicy("CorsPolicy", policy =>
@@ -41,6 +50,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>( c=>
 	var options = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"));
 	return ConnectionMultiplexer.Connect(options);
 });
+
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
