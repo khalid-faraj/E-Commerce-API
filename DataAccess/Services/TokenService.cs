@@ -19,7 +19,7 @@ namespace DataAccess.Services
         public TokenService(IConfiguration configuration)
         {
             _configuration= configuration;
-			_key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:key"]));
+			_key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:Key"]));
         }
         public string CreateToken(AppUser user)
 		{
@@ -29,7 +29,7 @@ namespace DataAccess.Services
 				new Claim(ClaimTypes.GivenName, user.DisplayName)
 			}; 
 
-			var cred = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+			var cred = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
 
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
