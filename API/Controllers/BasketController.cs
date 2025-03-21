@@ -1,7 +1,10 @@
-﻿using Core.Models;
+﻿using API.DTOs;
+using AutoMapper;
+using Core.Models;
 using Core.RepositoriesInterfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static StackExchange.Redis.Role;
 
 namespace API.Controllers
 {
@@ -10,10 +13,14 @@ namespace API.Controllers
 	public class BasketController : ControllerBase
 	{
 		private readonly IBasketRepository _basketRepository;
-        public BasketController(IBasketRepository basketRepository)
+		private readonly IMapper _mapper;
+
+		public BasketController(IBasketRepository basketRepository, IMapper mapper)
         {
             _basketRepository = basketRepository;
-        }
+			_mapper = mapper;
+
+		}
 
 		[HttpGet]
 		public async Task<ActionResult<CustomerBasket>> GetBasketByIdAsync(string id)
@@ -24,8 +31,9 @@ namespace API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync(CustomerBasket customerBasket)
+		public async Task<ActionResult<CustomerBasket>> UpdateBasketAsync(CustomerBasketDTO basket)
 		{
+			var customerBasket = _mapper.Map<CustomerBasket>(basket);
 			var updatedBasket = await _basketRepository.UpdateBasketAsync(customerBasket);
 			return Ok(updatedBasket);
 		}
