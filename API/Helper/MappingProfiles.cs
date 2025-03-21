@@ -1,6 +1,7 @@
 ﻿using API.DTOs;
 using API.Helper;
 using AutoMapper;
+using Core.Identity;
 using Core.Models;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,17 @@ using System.Threading.Tasks;
 
 namespace API.Helper
 {
-	public class ProductMapper : Profile
+	public class MappingProfiles : Profile
 	{
-		public ProductMapper() 
+		public MappingProfiles() 
 		{
 			CreateMap<Product, ProductToReturnDTO>()
 				.ForMember(d => d.ProductBrand, o => o.MapFrom(s => s.ProductBrand.Name))
 				.ForMember(d => d.ProductType, o => o.MapFrom(s => s.ProductType.Name))
 				.ForMember(d => d.PicUrl, o => o.MapFrom<ProductUrlResolver>());
 
+			CreateMap<Address, AddressDTO>().ReverseMap();
+		
 
 		}
 	}
