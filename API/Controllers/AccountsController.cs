@@ -2,9 +2,11 @@
 using API.Errors;
 using Core.Identity;
 using Core.RepositoriesInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -18,11 +20,11 @@ namespace API.Controllers
 		public AccountsController(UserManager<AppUser> userManager,
 			SignInManager<AppUser> signInManager,
 			ITokenService tokenService)
-        {
-            _signInManager = signInManager;
+		{
+			_signInManager = signInManager;
 			_userManager = userManager;
 			_tokenService = tokenService;
-        }
+		}
 
 		[HttpPost("login")]
 		public async Task<ActionResult<UserDTO>> Login(LogInDTO logInDTO)
@@ -61,5 +63,33 @@ namespace API.Controllers
 				Email = registerDTO.Email,
 			};
 		}
-    }
+
+		[Authorize]
+		[HttpGet]
+		public async Task<ActionResult<UserDTO>> GetCurrentUser()
+		{
+			var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+			var user = await _userManager.FindByNameAsync(email);
+			return new UserDTO
+			{
+				Email = user.Email,
+				Token = _tokenService.CreateToken(user),
+				DisplayName = user.DisplayName
+			};
+		}
+		[HttpGet("emailexists")]
+		public async Task<ActionResult<bool>> CheckEmailAsync([FromQuery] string email)
+		{
+			return await _userManager.FindByEmailAsync(email) != null;
+		}
+
+		[HttpGet("address")]
+		public async Task<ActionResult<Address>> GetUserAddress()
+		{
+			var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+			var user = await _userManager.FindByEmailAsync(email);
+			return user.Address;
+
+		}
+	}
 }
