@@ -1,4 +1,5 @@
 ﻿using Core.Models;
+using Core.Models.Order_Aggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,13 @@ namespace DataAccess.Data
 				var Products = JsonSerializer.Deserialize<List<Product>>(ProductsData);
 				context.Products.AddRange(Products);
 			}
-			if(context.ChangeTracker.HasChanges()) await context.SaveChangesAsync();
+			if (!context.DeliveryMethods.Any())
+			{
+				var deliveryData = File.ReadAllText("../DataAccess/Data/SeedData/delivery.json");
+				var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+				context.DeliveryMethods.AddRange(methods);
+			}
+			if (context.ChangeTracker.HasChanges()) await context.SaveChangesAsync();
 		}
 	}
 }
