@@ -25,7 +25,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
         [HttpPost]
-        public async Task<ActionResult<Order>> CreateOrder (OrderDTO orderDTO)
+        public async Task<ActionResult<Core.Models.Order_Aggregate.Order>> CreateOrder (OrderDTO orderDTO)
         {
             var email = HttpContext.User?.RetrieveEmailFromPrincipal();
             var address = _mapper.Map<AddressDTO, Core.Models.Order_Aggregate.Address>(orderDTO.ShipToAddress);
@@ -35,15 +35,15 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser()
+        public async Task<ActionResult<IReadOnlyList<OrderToReturnDTO>>> GetOrdersForUser()
         {
             var email = HttpContext.User?.RetrieveEmailFromPrincipal();
             var orders = _orderService.GetOrdersForUserAsync(email);
-            return Ok(orders);
+            return Ok(_mapper.Map<IReadOnlyList<OrderToReturnDTO>>(orders));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Core.Models.Order_Aggregate.Order>> GetOrderByIdForUser(int id)
+        public async Task<ActionResult<OrderToReturnDTO>> GetOrderByIdForUser(int id)
         {
             var email = HttpContext.User?.RetrieveEmailFromPrincipal();
             var order = await _orderService.GetOrderByIdAsync(id, email);
@@ -51,7 +51,7 @@ namespace API.Controllers
             {
                 return NotFound(new ApiResponse(404));
             }
-            return order;
+            return _mapper.Map<OrderToReturnDTO>(order);
         }
 
         [HttpGet("deliveryMethod")]

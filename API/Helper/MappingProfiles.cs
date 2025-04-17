@@ -3,6 +3,7 @@ using API.Helper;
 using AutoMapper;
 using Core.Identity;
 using Core.Models;
+using Core.Models.Order_Aggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,14 @@ namespace API.Helper
 				.ForMember(d => d.ProductType, o => o.MapFrom(s => s.ProductType.Name))
 				.ForMember(d => d.PicUrl, o => o.MapFrom<ProductUrlResolver>());
 
-			CreateMap<Address, AddressDTO>().ReverseMap();
+			CreateMap<Core.Identity.Address, AddressDTO>().ReverseMap();
 			CreateMap<CustomerBasketDTO, CustomerBasket>().ReverseMap();
 			CreateMap<BasketItemDTO, BasketItem>().ReverseMap();
 			CreateMap<AddressDTO, Core.Models.Order_Aggregate.Address>();
+			CreateMap<Order, OrderToReturnDTO>();
+			CreateMap<OrderItem, OrderItemDTO>();
+
+
 
 		}
 	}
