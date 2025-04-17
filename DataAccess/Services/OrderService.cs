@@ -1,6 +1,7 @@
 ﻿using Core.Models;
 using Core.Models.Order_Aggregate;
 using Core.RepositoriesInterfaces;
+using Core.Specifications;
 using DataAccess.RepositoriesImplementation;
 using System;
 using System.Collections.Generic;
@@ -43,19 +44,21 @@ namespace DataAccess.Services
 			return order;
 		}
 
-		public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
+		public async Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
 		{
-			throw new NotImplementedException();
+			return await _unitOfWork.Repository<DeliveryMethod>().ListAllAsync();
 		}
 
-		public Task<Order> GetOrderByIdAsync(int id, string buyerEmail)
+		public async Task<Order> GetOrderByIdAsync(int id, string buyerEmail)
 		{
-			throw new NotImplementedException();
+			var spec = new OrderWithItemsAndOrderingSpecification(id, buyerEmail);
+			return await _unitOfWork.Repository<Order>().GetEntityWithSpec(spec); 
 		}
 
-		public Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string byuyerEmail)
+		public async Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
 		{
-			throw new NotImplementedException();
+			var spec = new OrderWithItemsAndOrderingSpecification(buyerEmail);
+			return await _unitOfWork.Repository<Order>().ListAsync(spec);
 		}
 	}
 }
